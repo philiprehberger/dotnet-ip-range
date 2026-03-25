@@ -14,38 +14,51 @@ dotnet add package Philiprehberger.IpRange
 
 ## Usage
 
+### Parsing and Matching CIDR Ranges
+
 ```csharp
 using System.Net;
 using Philiprehberger.IpRange;
 
-// Parse a CIDR range
+// Parse a CIDR range and check membership
 var range = IpRange.Parse("192.168.1.0/24");
 bool match = range.Contains(IPAddress.Parse("192.168.1.42")); // true
 
-// Check if an address is private
-bool isPrivate = IpRange.IsPrivate(IPAddress.Parse("10.0.0.1"));    // true
-bool isPublic  = IpRange.IsPrivate(IPAddress.Parse("8.8.8.8"));     // false
-
-// Check loopback
-bool isLoopback = IpRange.IsLoopback(IPAddress.Parse("127.0.0.1")); // true
-
-// Work with CIDR ranges directly
+// Inspect range boundaries
 var cidr = IpCidrRange.Parse("10.0.0.0/8");
 Console.WriteLine(cidr.FirstAddress); // 10.0.0.0
 Console.WriteLine(cidr.LastAddress);  // 10.255.255.255
 Console.WriteLine(cidr.PrefixLength); // 8
+```
 
-// Match against a list of ranges
+### Matching Against Multiple Ranges
+
+```csharp
+using System.Net;
+using Philiprehberger.IpRange;
+
+// Parse comma-separated CIDR ranges into a list
 var list = IpRangeList.Parse("10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16");
 bool allowed = list.Contains(IPAddress.Parse("172.16.5.1")); // true
 
-// IPv6 support
+// IPv6 ranges work the same way
 var ipv6Range = IpCidrRange.Parse("fe80::/10");
 bool isLinkLocal = ipv6Range.Contains(IPAddress.Parse("fe80::1")); // true
+```
 
-// Classification
+### Classifying IP Addresses
+
+```csharp
+using System.Net;
+using Philiprehberger.IpRange;
+
+// Get the full classification for an address
 var classification = IpClassification.Classify(IPAddress.Parse("192.168.1.1"));
 Console.WriteLine(classification); // Private
+
+// Quick checks via IpRange helpers
+bool isPrivate  = IpRange.IsPrivate(IPAddress.Parse("10.0.0.1"));    // true
+bool isLoopback = IpRange.IsLoopback(IPAddress.Parse("127.0.0.1")); // true
 ```
 
 ## API
