@@ -3,6 +3,7 @@
 [![CI](https://github.com/philiprehberger/dotnet-ip-range/actions/workflows/ci.yml/badge.svg)](https://github.com/philiprehberger/dotnet-ip-range/actions/workflows/ci.yml)
 [![NuGet](https://img.shields.io/nuget/v/Philiprehberger.IpRange.svg)](https://www.nuget.org/packages/Philiprehberger.IpRange)
 [![License](https://img.shields.io/github/license/philiprehberger/dotnet-ip-range)](LICENSE)
+[![Sponsor](https://img.shields.io/badge/sponsor-GitHub%20Sponsors-ec6cb9)](https://github.com/sponsors/philiprehberger)
 
 Parse and match IP addresses against CIDR ranges with IPv4 and IPv6 support.
 
