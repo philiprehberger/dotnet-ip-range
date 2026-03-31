@@ -2,8 +2,7 @@
 
 [![CI](https://github.com/philiprehberger/dotnet-ip-range/actions/workflows/ci.yml/badge.svg)](https://github.com/philiprehberger/dotnet-ip-range/actions/workflows/ci.yml)
 [![NuGet](https://img.shields.io/nuget/v/Philiprehberger.IpRange.svg)](https://www.nuget.org/packages/Philiprehberger.IpRange)
-[![License](https://img.shields.io/github/license/philiprehberger/dotnet-ip-range)](LICENSE)
-[![Sponsor](https://img.shields.io/badge/sponsor-GitHub%20Sponsors-ec6cb9)](https://github.com/sponsors/philiprehberger)
+[![Last updated](https://img.shields.io/github/last-commit/philiprehberger/dotnet-ip-range)](https://github.com/philiprehberger/dotnet-ip-range/commits/main)
 
 Parse and match IP addresses against CIDR ranges with IPv4 and IPv6 support.
 
@@ -106,6 +105,24 @@ bool isLoopback = IpRange.IsLoopback(IPAddress.Parse("127.0.0.1")); // true
 dotnet build src/Philiprehberger.IpRange.csproj --configuration Release
 ```
 
+## Support
+
+If you find this project useful:
+
+⭐ [Star the repo](https://github.com/philiprehberger/dotnet-ip-range)
+
+🐛 [Report issues](https://github.com/philiprehberger/dotnet-ip-range/issues?q=is%3Aissue+is%3Aopen+label%3Abug)
+
+💡 [Suggest features](https://github.com/philiprehberger/dotnet-ip-range/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement)
+
+❤️ [Sponsor development](https://github.com/sponsors/philiprehberger)
+
+🌐 [All Open Source Projects](https://philiprehberger.com/open-source-packages)
+
+💻 [GitHub Profile](https://github.com/philiprehberger)
+
+🔗 [LinkedIn Profile](https://www.linkedin.com/in/philiprehberger)
+
 ## License
 
-MIT
+[MIT](LICENSE)
