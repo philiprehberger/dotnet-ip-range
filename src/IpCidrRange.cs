@@ -100,6 +100,31 @@ public readonly struct IpCidrRange : IEquatable<IpCidrRange>
     }
 
     /// <summary>
+    /// Determines whether this CIDR range overlaps with another CIDR range
+    /// (i.e., they share at least one common address).
+    /// </summary>
+    /// <param name="other">The CIDR range to check for overlap.</param>
+    /// <returns><c>true</c> if the ranges have any addresses in common; otherwise, <c>false</c>.</returns>
+    public bool Overlaps(IpCidrRange other)
+    {
+        if (other.Network.AddressFamily != Network.AddressFamily)
+        {
+            return false;
+        }
+
+        // Use the shorter prefix (larger network) to compare.
+        // If both networks masked with the shorter prefix are equal, the ranges overlap.
+        int shorterPrefix = Math.Min(PrefixLength, other.PrefixLength);
+        int maxBits = Network.AddressFamily == AddressFamily.InterNetwork ? 32 : 128;
+        var shorterMask = CreateMask(maxBits, shorterPrefix);
+
+        var thisMasked = ApplyMask(_networkBytes, shorterMask);
+        var otherMasked = ApplyMask(other._networkBytes, shorterMask);
+
+        return thisMasked.AsSpan().SequenceEqual(otherMasked);
+    }
+
+    /// <summary>
     /// Parses a CIDR notation string into an <see cref="IpCidrRange"/>.
     /// </summary>
     /// <param name="cidr">A string in CIDR notation (e.g. "192.168.0.0/16").</param>

@@ -46,6 +46,19 @@ var ipv6Range = IpCidrRange.Parse("fe80::/10");
 bool isLinkLocal = ipv6Range.Contains(IPAddress.Parse("fe80::1")); // true
 ```
 
+### Checking Range Overlap
+
+```csharp
+using Philiprehberger.IpRange;
+
+var rangeA = IpCidrRange.Parse("192.168.0.0/16");
+var rangeB = IpCidrRange.Parse("192.168.1.0/24");
+var rangeC = IpCidrRange.Parse("10.0.0.0/8");
+
+bool overlaps = rangeA.Overlaps(rangeB); // true — rangeB is within rangeA
+bool separate = rangeA.Overlaps(rangeC); // false — completely disjoint
+```
+
 ### Classifying IP Addresses
 
 ```csharp
@@ -81,6 +94,7 @@ bool isLoopback = IpRange.IsLoopback(IPAddress.Parse("127.0.0.1")); // true
 | `LastAddress` | Last address in the range |
 | `Contains(IPAddress)` | Check if an address falls within this range |
 | `Contains(IpCidrRange)` | Check if another range is fully contained |
+| `Overlaps(IpCidrRange)` | Check if two ranges share any common addresses |
 | `Parse(string cidr)` | Parse a CIDR notation string |
 
 ### `IpRangeList`

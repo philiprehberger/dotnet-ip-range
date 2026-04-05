@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.0 (2026-04-05)
+
+- Add `IpCidrRange.Overlaps(IpCidrRange other)` method to check if two CIDR ranges share any common addresses
+
 ## 0.1.2 (2026-03-31)
 
 - Standardize README to 3-badge format with emoji Support section
