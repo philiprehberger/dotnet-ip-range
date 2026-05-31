@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.0 (2026-05-30)
+
+- Add `IpCidrRange.TryParse(string?, out IpCidrRange)` for safe parsing without exceptions
+- Add `IpCidrRange.AddressCount` property returning the total addresses in the range as `BigInteger`
+- Add `IpRangeList.TryParse(string?, out IpRangeList?)` for safe parsing without exceptions
+- Add card image to README
+
 ## 0.2.0 (2026-04-05)
 
 - Add `IpCidrRange.Overlaps(IpCidrRange other)` method to check if two CIDR ranges share any common addresses

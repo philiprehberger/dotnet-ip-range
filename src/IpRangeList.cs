@@ -65,6 +65,37 @@ public sealed class IpRangeList
         return new IpRangeList(parsed);
     }
 
+    /// <summary>
+    /// Attempts to parse a comma-separated list of CIDR ranges.
+    /// </summary>
+    /// <param name="ranges">A comma-separated string of CIDR ranges.</param>
+    /// <param name="result">When this method returns, contains the parsed <see cref="IpRangeList"/> if successful; otherwise <c>null</c>.</param>
+    /// <returns><c>true</c> if every range was valid CIDR notation; otherwise, <c>false</c>.</returns>
+    public static bool TryParse(string? ranges, out IpRangeList? result)
+    {
+        result = null;
+
+        if (string.IsNullOrWhiteSpace(ranges))
+        {
+            return false;
+        }
+
+        var parts = ranges.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        var parsed = new IpCidrRange[parts.Length];
+
+        for (int i = 0; i < parts.Length; i++)
+        {
+            if (!IpCidrRange.TryParse(parts[i], out var range))
+            {
+                return false;
+            }
+            parsed[i] = range;
+        }
+
+        result = new IpRangeList(parsed);
+        return true;
+    }
+
     /// <inheritdoc />
     public override string ToString() => string.Join(", ", _ranges.Select(r => r.ToString()));
 }

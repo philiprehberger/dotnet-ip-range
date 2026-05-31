@@ -1,5 +1,6 @@
 using System.Net;
 using System.Net.Sockets;
+using System.Numerics;
 
 namespace Philiprehberger.IpRange;
 
@@ -61,6 +62,19 @@ public readonly struct IpCidrRange : IEquatable<IpCidrRange>
                 lastBytes[i] = (byte)(_networkBytes[i] | ~_maskBytes[i]);
             }
             return new IPAddress(lastBytes);
+        }
+    }
+
+    /// <summary>
+    /// Gets the total number of addresses contained in this CIDR range.
+    /// Uses <see cref="BigInteger"/> to accommodate IPv6 ranges that exceed <c>ulong.MaxValue</c>.
+    /// </summary>
+    public BigInteger AddressCount
+    {
+        get
+        {
+            int maxPrefix = Network.AddressFamily == AddressFamily.InterNetwork ? 32 : 128;
+            return BigInteger.One << (maxPrefix - PrefixLength);
         }
     }
 
@@ -151,6 +165,47 @@ public readonly struct IpCidrRange : IEquatable<IpCidrRange>
         }
 
         return new IpCidrRange(address, prefixLength);
+    }
+
+    /// <summary>
+    /// Attempts to parse a CIDR notation string into an <see cref="IpCidrRange"/>.
+    /// </summary>
+    /// <param name="cidr">A string in CIDR notation (e.g. "192.168.0.0/16").</param>
+    /// <param name="result">When this method returns, contains the parsed <see cref="IpCidrRange"/> if successful; otherwise the default value.</param>
+    /// <returns><c>true</c> if the input was a valid CIDR notation; otherwise, <c>false</c>.</returns>
+    public static bool TryParse(string? cidr, out IpCidrRange result)
+    {
+        result = default;
+
+        if (string.IsNullOrWhiteSpace(cidr))
+        {
+            return false;
+        }
+
+        var parts = cidr.Trim().Split('/');
+        if (parts.Length != 2)
+        {
+            return false;
+        }
+
+        if (!IPAddress.TryParse(parts[0], out var address))
+        {
+            return false;
+        }
+
+        if (!int.TryParse(parts[1], out var prefixLength))
+        {
+            return false;
+        }
+
+        int maxPrefix = address.AddressFamily == AddressFamily.InterNetwork ? 32 : 128;
+        if (prefixLength < 0 || prefixLength > maxPrefix)
+        {
+            return false;
+        }
+
+        result = new IpCidrRange(address, prefixLength);
+        return true;
     }
 
     /// <inheritdoc />
